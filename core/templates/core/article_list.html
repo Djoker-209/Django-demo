@@ -1,0 +1,42 @@
+{% extends "core/base.html" %}
+{% load core_tags %}
+{% block title %}Articles{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between mb-3">
+  <h4>Articles</h4>
+  {% if user.is_authenticated %}
+    <a href="{% url 'article_create' %}" class="btn btn-sm btn-primary">+ New</a>
+  {% endif %}
+</div>
+<form method="get" class="mb-3">
+  <div class="input-group">
+    <input name="q" class="form-control" placeholder="Search…" value="{{ query }}">
+    <button class="btn btn-outline-secondary">Search</button>
+    {% if query %}<a href="{% url 'article_list' %}" class="btn btn-outline-danger">Clear</a>{% endif %}
+  </div>
+</form>
+{% for article in articles %}
+  <div class="card mb-3">
+    <div class="card-body">
+      <h5><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></h5>
+     <p class="text-muted small">{{ article.body|truncatewords:20 }}</p>
+      <small>by <strong>{{ article.author.username }}</strong>
+        {% if article.category %} · {{ article.category }}{% endif %}
+        · 👁 {{ article.view_count }}
+      </small>
+    </div>
+  </div>
+{% empty %}<div class="alert alert-info">No articles found.</div>
+{% endfor %}
+{% if is_paginated %}
+<nav><ul class="pagination">
+  {% if page_obj.has_previous %}
+    <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">«</a></li>
+  {% endif %}
+  <li class="page-item active"><a class="page-link">{{ page_obj.number }}/{{ page_obj.paginator.num_pages }}</a></li>
+  {% if page_obj.has_next %}
+    <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">»</a></li>
+  {% endif %}
+</ul></nav>
+{% endif %}
+{% endblock %}

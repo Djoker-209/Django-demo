@@ -1,0 +1,29 @@
+{% extends "core/base.html" %}
+{% block title %}Session Demo{% endblock %}
+{% block content %}
+<h4>Session &amp; Cookie Demo</h4>
+<div class="row g-3 mb-4">
+  <div class="col-md-6">
+    <div class="card border-info">
+      <div class="card-header bg-info text-white">🔐 Session Contents</div>
+      <div class="card-body"><pre>{{ session_items }}</pre></div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">🍪 Cookie Contents</div>
+      <div class="card-body"><pre>{{ cookies }}</pre></div>
+    </div>
+  </div>
+</div>
+<h6>Actions</h6>
+<div class="d-flex flex-wrap gap-2">
+  <a href="?action=set&key=color&value=blue" class="btn btn-success btn-sm">Set session[color]=blue</a>
+  <a href="?action=set&key=lang&value=python" class="btn btn-success btn-sm">Set session[lang]=python</a>
+  <a href="?action=delete&key=color" class="btn btn-warning btn-sm">Delete session[color]</a>
+  <a href="?action=flush" class="btn btn-danger btn-sm">Flush entire session</a>
+</div>
+<p class="mt-3 text-muted small">
+  <strong>cookie_count</strong> increments on every page load via <code>response.set_cookie()</code>.
+</p>
+{% endblock %}

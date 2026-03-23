@@ -1,0 +1,203 @@
+{% extends "core/base.html" %}
+{% load core_tags %}
+{% block title %}Home — Django Demo{% endblock %}
+
+{% block content %}
+
+<!-- ── HERO ─────────────────────────────────────────────────────────── -->
+<div class="position-relative overflow-hidden rounded-4 mb-5 p-5 text-white"
+     style="background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);">
+  <div class="row align-items-center">
+    <div class="col-md-7">
+      <span class="badge bg-warning text-dark mb-2">🐍 Django 4.x Demo App</span>
+      <h1 class="display-4 fw-bold">Learn Django<br><span style="color:#f0c040;">by doing.</span></h1>
+      <p class="lead text-white-50 mt-3">
+        A fully working project covering every core concept —
+        routing, ORM, forms, sessions, middleware, auth and more.
+        All in one place. All connected.
+      </p>
+      <div class="d-flex flex-wrap gap-2 mt-4">
+        <a href="{% url 'article_list' %}" class="btn btn-warning fw-bold">Browse Articles</a>
+        {% if user.is_authenticated %}
+          <a href="{% url 'article_create' %}" class="btn btn-outline-light">✏️ Write Article</a>
+          <a href="{% url 'dashboard' %}" class="btn btn-outline-light">👤 Dashboard</a>
+        {% else %}
+          <a href="{% url 'register' %}" class="btn btn-outline-light">Get Started →</a>
+          <a href="{% url 'login' %}" class="btn btn-outline-light">Login</a>
+        {% endif %}
+      </div>
+    </div>
+    <div class="col-md-5 text-center d-none d-md-block">
+      <div style="font-size:8rem; opacity:0.15; line-height:1;">🐍</div>
+    </div>
+  </div>
+
+  <!-- Session & Cookie pill -->
+  <div class="position-absolute top-0 end-0 m-3">
+    <span class="badge bg-black bg-opacity-50 border border-secondary">
+      👁 Session visits: <strong>{{ visits }}</strong>
+      &nbsp;|&nbsp; 🍪 Theme: <strong>{{ theme }}</strong>
+    </span>
+  </div>
+</div>
+
+<!-- ── CONCEPT CARDS ─────────────────────────────────────────────── -->
+<h5 class="text-muted fw-bold mb-3 text-uppercase" style="letter-spacing:.1em;">What's demonstrated</h5>
+<div class="row g-3 mb-5">
+
+  <div class="col-md-4">
+    <div class="card h-100 border-0 shadow-sm">
+      <div class="card-body">
+        <div class="fs-2 mb-2">🔀</div>
+        <h6 class="fw-bold">Routing</h6>
+        <p class="small text-muted mb-2">
+          <code>path()</code>, <code>&lt;int:pk&gt;</code> converters,
+          named URLs, <code>include()</code> and <code>reverse()</code>.
+        </p>
+        <code class="small text-primary">core/urls.py</code>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card h-100 border-0 shadow-sm">
+      <div class="card-body">
+        <div class="fs-2 mb-2">📬</div>
+        <h6 class="fw-bold">Requests &amp; Responses</h6>
+        <p class="small text-muted mb-2">
+          <code>HttpRequest</code>, <code>JsonResponse</code>,
+          GET/POST branching, <code>request.body</code>.
+        </p>
+        <a href="{% url 'api_articles' %}" target="_blank" class="small text-primary">
+          Try JSON API →
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card h-100 border-0 shadow-sm">
+      <div class="card-body">
+        <div class="fs-2 mb-2">📝</div>
+        <h6 class="fw-bold">Forms</h6>
+        <p class="small text-muted mb-2">
+          <code>ModelForm</code>, plain <code>Form</code>,
+          widget customisation, field &amp; cross-field validation.
+        </p>
+        <a href="{% url 'contact' %}" class="small text-primary">Try contact form →</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card h-100 border-0 shadow-sm">
+      <div class="card-body">
+        <div class="fs-2 mb-2">🗄️</div>
+        <h6 class="fw-bold">ORM &amp; CRUD</h6>
+        <p class="small text-muted mb-2">
+          Models, ForeignKey, ManyToMany, <code>filter()</code>,
+          <code>Q</code> objects, <code>select_related</code>.
+        </p>
+        <a href="{% url 'article_list' %}" class="small text-primary">Browse articles →</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card h-100 border-0 shadow-sm">
+      <div class="card-body">
+        <div class="fs-2 mb-2">🔐</div>
+        <h6 class="fw-bold">Auth &amp; Sessions</h6>
+        <p class="small text-muted mb-2">
+          <code>authenticate()</code>, <code>login()</code>,
+          <code>@login_required</code>, cookies, session CRUD.
+        </p>
+        <a href="{% url 'session_demo' %}" class="small text-primary">Session demo →</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card h-100 border-0 shadow-sm">
+      <div class="card-body">
+        <div class="fs-2 mb-2">⚙️</div>
+        <h6 class="fw-bold">Middleware</h6>
+        <p class="small text-muted mb-2">
+          Request logging, error handling, security headers,
+          timing every request to <code>requests.log</code>.
+        </p>
+        <code class="small text-primary">core/middleware.py</code>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── STATS BAR ─────────────────────────────────────────────────── -->
+<div class="row g-3 mb-5 text-center">
+  <div class="col-4">
+    <div class="p-3 rounded-3 bg-primary bg-opacity-10 border border-primary border-opacity-25">
+      <div class="fs-3 fw-bold text-primary">{% published_count %}</div>
+      <div class="small text-muted">Published Articles</div>
+    </div>
+  </div>
+  <div class="col-4">
+    <div class="p-3 rounded-3 bg-success bg-opacity-10 border border-success border-opacity-25">
+      <div class="fs-3 fw-bold text-success">{{ visits }}</div>
+      <div class="small text-muted">Your Session Visits</div>
+    </div>
+  </div>
+  <div class="col-4">
+    <div class="p-3 rounded-3 bg-warning bg-opacity-10 border border-warning border-opacity-25">
+      <div class="fs-3 fw-bold text-warning">6</div>
+      <div class="small text-muted">Concepts Covered</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── RECENT ARTICLES ───────────────────────────────────────────── -->
+{% if recent_articles %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h5 class="fw-bold mb-0">🕐 Recent Articles</h5>
+  <a href="{% url 'article_list' %}" class="btn btn-sm btn-outline-secondary">View all →</a>
+</div>
+<div class="row g-3 mb-5">
+  {% for article in recent_articles %}
+  <div class="col-md-4">
+    <div class="card h-100 border-0 shadow-sm">
+      <div class="card-body d-flex flex-column">
+        <div class="d-flex justify-content-between mb-2">
+          {% if article.category %}
+            <span class="badge bg-secondary">{{ article.category.name }}</span>
+          {% else %}
+            <span></span>
+          {% endif %}
+          <small class="text-muted">{{ article.created_at|date:"M d" }}</small>
+        </div>
+        <h6 class="fw-bold">
+          <a href="{{ article.get_absolute_url }}" class="text-decoration-none text-dark">
+            {{ article.title }}
+          </a>
+        </h6>
+        <p class="small text-muted flex-grow-1">
+          {{ article.body|truncatewords:15 }}
+        </p>
+        <div class="d-flex justify-content-between align-items-center mt-2">
+          <small class="text-muted">by <strong>{{ article.author.username }}</strong></small>
+          <small class="text-muted">👁 {{ article.view_count }}</small>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+<!-- ── THEME SWITCHER ────────────────────────────────────────────── -->
+<div class="text-center py-4 border-top">
+  <span class="text-muted small me-3">🎨 Theme preference (cookie demo):</span>
+  <a href="{% url 'set_theme' %}?theme=light" class="btn btn-sm btn-outline-secondary me-1">☀️ Light</a>
+  <a href="{% url 'set_theme' %}?theme=dark" class="btn btn-sm btn-outline-dark">🌙 Dark</a>
+</div>
+
+{% endblock %}
